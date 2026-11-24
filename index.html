@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planificación Diaria de Clase — Colegio Montano (Plan N.° 11)</title>
+  <style>
+    /* ==========================================================================
+       SISTEMA DE DISEÑO INSTITUCIONAL — COLEGIO MONTANO
+       Paleta estricta:
+       - Azul institucional: #1F3C88
+       - Azul secundario:    #3F72AF
+       - Blanco:             #FFFFFF
+       - Amarillo inst.:     #F2C94C
+       ========================================================================== */
+    :root {
+      --azul-institucional: #1F3C88;
+      --azul-secundario: #3F72AF;
+      --blanco: #FFFFFF;
+      --amarillo-institucional: #F2C94C;
+      --borde-suave: rgba(63, 114, 175, 0.22);
+      --fondo-tinte-azul: rgba(63, 114, 175, 0.05);
+      --fondo-tinte-amarillo: rgba(242, 201, 76, 0.16);
+      --texto-oscuro: #16264C;
+      --texto-secundario: #334770;
+      --sombra-card: 0 4px 14px rgba(31, 60, 136, 0.07);
+      --radio: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #F5F8FC;
+      color: var(--texto-oscuro);
+      line-height: 1.55;
+      font-size: 15px;
+      padding-bottom: 48px;
+    }
+
+    /* Barra de herramientas superior */
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--blanco);
+      border-bottom: 2px solid var(--azul-secundario);
+      padding: 10px 20px;
+      box-shadow: 0 2px 10px rgba(31, 60, 136, 0.08);
+    }
+
+    .toolbar-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .toolbar-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--azul-institucional);
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--amarillo-institucional);
+      border: 1.5px solid var(--azul-institucional);
+      display: inline-block;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+    }
+
+    .btn-primary:hover {
+      background-color: #172E6B;
+    }
+
+    .btn-secondary {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+    }
+
+    .btn-secondary:hover {
+      background-color: #325D91;
+    }
+
+    .btn-accent {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      border-color: var(--azul-institucional);
+    }
+
+    .btn-accent:hover {
+      background-color: #E8BC35;
+    }
+
+    .btn-outline {
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      border-color: var(--azul-secundario);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    /* Botones de navegación de secciones principales */
+    .quick-nav {
+      background-color: var(--blanco);
+      border: 1px solid var(--borde-suave);
+      border-radius: var(--radio);
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      box-shadow: var(--sombra-card);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quick-nav-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--azul-secundario);
+      margin-right: 4px;
+    }
+
+    .quick-nav-link {
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+      background-color: var(--fondo-tinte-azul);
+      border: 1px solid var(--borde-suave);
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .quick-nav-link:hover {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1140px;
+      margin: 22px auto 0;
+      padding: 0 16px;
+    }
+
+    /* Encabezado Institucional */
+    .inst-header {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      border-radius: var(--radio);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      border-bottom: 6px solid var(--amarillo-institucional);
+      box-shadow: var(--sombra-card);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .inst-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .inst-crest {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 22px;
+      border: 3px solid var(--amarillo-institucional);
+      flex-shrink: 0;
+    }
+
+    .inst-title-group h1 {
+      font-size: 24px;
+      letter-spacing: 0.3px;
+      font-weight: 800;
+      color: var(--blanco);
+      line-height: 1.2;
+    }
+
+    .inst-title-group p {
+      font-size: 14px;
+      color: var(--amarillo-institucional);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .time-summary-box {
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      padding: 12px 18px;
+      border-radius: 8px;
+      border-left: 5px solid var(--amarillo-institucional);
+      text-align: right;
+      min-width: 210px;
+    }
+
+    .time-summary-box .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--azul-secundario);
+      font-weight: 700;
+    }
+
+    .time-summary-box .value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--azul-institucional);
+    }
+
+    .time-summary-box .sub {
+      font-size: 12px;
+      color: var(--texto-secundario);
+      margin-top: 2px;
+    }
+
+    .time-warning {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 11.5px;
+    }
+
+    /* Tarjetas de sección */
+    .card {
+      background-color: var(--blanco);
+      border-radius: var(--radio);
+      border: 1px solid var(--borde-suave);
+      box-shadow: var(--sombra-card);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-header.primary-header {
+      background-color: var(--azul-institucional);
+    }
+
+    .card-header h2 {
+      font-size: 16.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-num {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 2px 9px;
+      border-radius: 6px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* Campos editables */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 5px;
+      padding: 3px 6px;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    [contenteditable="true"]:hover {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: var(--blanco);
+      box-shadow: 0 0 0 2px var(--amarillo-institucional);
+    }
+
+    /* Grid de Datos Generales */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .meta-item {
+      border: 1px solid var(--borde-suave);
+      border-left: 4px solid var(--azul-secundario);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background-color: var(--blanco);
+    }
+
+    .meta-item.highlight-meta {
+      border-left-color: var(--amarillo-institucional);
+      background-color: var(--fondo-tinte-amarillo);
+    }
+
+    .meta-label {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--azul-secundario);
+      letter-spacing: 0.4px;
+      margin-bottom: 3px;
+    }
+
+    .meta-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+    }
+
+    /* Competencia y Logro */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .comp-box {
+      border: 1.5px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 16px;
+      background-color: var(--blanco);
+    }
+
+    .comp-box-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--azul-institucional);
+      background-color: var(--amarillo-institucional);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .comp-text {
+      font-size: 15px;
+      color: var(--texto-oscuro);
+      line-height: 1.6;
+    }
+
+    /* Competencias clave y blandas */
+    .skills-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-group-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+      border-bottom: 2px solid var(--amarillo-institucional);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .skill-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background-color: var(--blanco);
+    }
+
+    .skill-item.inactive-skill {
+      opacity: 0.55;
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    .skill-item input[type="checkbox"] {
+      margin-top: 4px;
+      width: 17px;
+      height: 17px;
+      accent-color: var(--azul-institucional);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .skill-content strong {
+      color: var(--azul-institucional);
+      display: block;
+      font-size: 14.5px;
+    }
+
+    .skill-content p {
+      font-size: 13.5px;
+      color: var(--texto-secundario);
+      margin-top: 2px;
+    }
+
+    /* Hábitos Montano */
+    .habits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 14px;
+    }
+
+    .habit-card {
+      border: 1px solid var(--borde-suave);
+      border-top: 4px solid var(--amarillo-institucional);
+      border-radius: 8px;
+      padding: 14px;
+      background-color: var(--blanco);
+    }
+
+    .habit-badge {
+      display: inline-block;
+      background-color: var(--azul-institucional);
+      color: var(--amarillo-institucional);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+
+    .habit-title {
+      font-weight: 700;
+      color: var(--azul-institucional);
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .habit-desc {
+      font-size: 13.8px;
+      color: var(--texto-secundario);
+    }
+
+    /* Navegación Secuencia Didáctica */
+    .seq-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background-color: var(--fondo-tinte-azul);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--borde-suave);
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      flex: 1 1 160px;
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      border: 1.5px solid var(--azul-secundario);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    .tab-btn.active {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      border-color: var(--azul-institucional);
+    }
+
+    .tab-btn .tab-code {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .tab-btn .tab-time {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-weight: 800;
+    }
+
+    .tab-btn .tab-name {
+      font-size: 12.5px;
+      margin-top: 3px;
+      opacity: 0.92;
+    }
+
+    /* Barra de distribución visual de 50 minutos */
+    .timeline-bar {
+      display: flex;
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background-color: var(--fondo-tinte-azul);
+      border: 1px solid var(--borde-suave);
+      margin-bottom: 18px;
+    }
+
+    .tl-seg-im { background-color: var(--amarillo-institucional); }
+    .tl-seg-tp { background-color: var(--azul-secundario); }
+    .tl-seg-tc { background-color: var(--azul-institucional); }
+    .tl-seg-p  { background-color: #6B94C6; }
+
+    /* Bloques de momento didáctico */
+    .moment-panel {
+      display: none;
+      border: 1.5px solid var(--azul-secundario);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      background-color: var(--blanco);
+    }
+
+    .moment-panel.active-panel {
+      display: block;
+    }
+
+    .moment-banner {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 4px solid var(--amarillo-institucional);
+    }
+
+    .moment-banner h3 {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .moment-time-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .moment-time-input {
+      width: 46px;
+      border: 1.5px solid var(--azul-institucional);
+      border-radius: 5px;
+      text-align: center;
+      font-weight: 800;
+      color: var(--azul-institucional);
+      background-color: var(--blanco);
+      padding: 2px;
+      font-size: 14px;
+    }
+
+    .moment-content {
+      padding: 18px;
+    }
+
+    .moment-meta-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .moment-info-box {
+      background-color: var(--fondo-tinte-azul);
+      border-left: 4px solid var(--azul-secundario);
+      padding: 10px 14px;
+      border-radius: 6px;
+    }
+
+    .moment-info-box.yellow-box {
+      background-color: var(--fondo-tinte-amarillo);
+      border-left-color: var(--amarillo-institucional);
+    }
+
+    .moment-info-box h4 {
+      font-size: 12.5px;
+      text-transform: uppercase;
+      color: var(--azul-institucional);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .steps-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+
+    .steps-table th {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 700;
+    }
+
+    .steps-table td {
+      border: 1px solid var(--borde-suave);
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+
+    .time-pill {
+      display: inline-block;
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 800;
+      font-size: 12.5px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .role-card {
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background-color: var(--blanco);
+    }
+
+    .role-card strong {
+      color: var(--azul-institucional);
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    /* Recursos Didácticos */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .resource-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 11px 13px;
+      background-color: var(--blanco);
+    }
+
+    .resource-icon {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 800;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    /* Evaluación */
+    .eval-stages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .eval-stage-card {
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 14px;
+      background-color: var(--blanco);
+    }
+
+    .eval-tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+
+    .tag-formativa {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+    }
+
+    .tag-calificada {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+    }
+
+    .feedback-box {
+      background-color: var(--fondo-tinte-amarillo);
+      border: 1.5px solid var(--amarillo-institucional);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    /* Instrumento de evaluación interactivo */
+    .rubric-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background-color: var(--fondo-tinte-azul);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      border: 1px solid var(--borde-suave);
+    }
+
+    .student-eval-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .student-eval-field label {
+      font-weight: 700;
+      color: var(--azul-institucional);
+      font-size: 14px;
+    }
+
+    .student-eval-input {
+      border: 1.5px solid var(--azul-secundario);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 14px;
+      color: var(--texto-oscuro);
+      background-color: var(--blanco);
+      min-width: 220px;
+    }
+
+    .score-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .score-badge {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .level-badge {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .checklist-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .checklist-table th {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .checklist-table th.center,
+    .checklist-table td.center {
+      text-align: center;
+    }
+
+    .checklist-table td {
+      border: 1px solid var(--borde-suave);
+      padding: 10px 12px;
+    }
+
+    .checklist-table tr:nth-child(even) {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    .radio-eval {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--azul-institucional);
+      cursor: pointer;
+    }
+
+    /* Observaciones docentes */
+    .obs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .obs-box {
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 14px;
+      background-color: var(--blanco);
+    }
+
+    .obs-box h3 {
+      font-size: 14.5px;
+      color: var(--azul-institucional);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .obs-area {
+      min-height: 82px;
+      border: 1px dashed var(--azul-secundario);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
+      color: var(--texto-oscuro);
+      background-color: var(--blanco);
+    }
+
+    /* Modal personalizado (sin alert/confirm) */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(22, 38, 76, 0.55);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background-color: var(--blanco);
+      border-radius: 12px;
+      max-width: 440px;
+      width: 100%;
+      border-top: 6px solid var(--amarillo-institucional);
+      box-shadow: 0 12px 30px rgba(31, 60, 136, 0.25);
+      overflow: hidden;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .modal-body h3 {
+      color: var(--azul-institucional);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .modal-body p {
+      color: var(--texto-secundario);
+      font-size: 14.5px;
+      margin-bottom: 18px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Notificación Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      border-left: 5px solid var(--amarillo-institucional);
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(31, 60, 136, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* Responsividad móvil */
+    @media (max-width: 640px) {
+      .inst-header {
+        padding: 18px;
+      }
+      .inst-title-group h1 {
+        font-size: 20px;
+      }
+      .time-summary-box {
+        width: 100%;
+        text-align: left;
+      }
+      .toolbar-actions {
+        width: 100%;
+      }
+      .toolbar-actions .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+    }
+
+    /* ==========================================================================
+       ESTILOS DE IMPRESIÓN / EXPORTACIÓN PDF LIMPIA
+       ========================================================================== */
+    @media print {
+      @page {
+        size: letter;
+        margin: 12mm;
+      }
+
+      body {
+        background-color: var(--blanco) !important;
+        padding-bottom: 0;
+        font-size: 12.5px;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .toolbar,
+      .quick-nav,
+      .seq-nav,
+      .no-print,
+      .modal-backdrop,
+      .toast {
+        display: none !important;
+      }
+
+      .container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .card,
+      .inst-header,
+      .moment-panel {
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+
+      .moment-panel {
+        display: block !important;
+        margin-bottom: 14px !important;
+      }
+
+      .moment-time-input,
+      .student-eval-input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE HERRAMIENTAS INTERACTIVA -->
+  <header class="toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-status">
+        <span class="status-dot"></span>
+        <span id="save-status">Plan N.° 11 listo • Edición directa habilitada</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" class="btn btn-primary" id="btn-save" title="Guardar cambios en este navegador">
+          Guardar cambios
+        </button>
+        <button type="button" class="btn btn-secondary" id="btn-export" title="Descargar archivo HTML con los datos editados">
+          Descargar HTML
+        </button>
+        <button type="button" class="btn btn-accent" id="btn-print" title="Imprimir o guardar como PDF">
+          Imprimir / PDF
+        </button>
+        <button type="button" class="btn btn-outline" id="btn-reset" title="Restaurar valores originales">
+          Restablecer plantilla
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="plan-root">
+
+    <!-- BOTONES DE NAVEGACIÓN RÁPIDA ENTRE LAS 9 SECCIONES -->
+    <nav class="quick-nav no-print" aria-label="Navegación entre secciones del plan">
+      <span class="quick-nav-label">Secciones:</span>
+      <a href="#sec-1" class="quick-nav-link">1. Datos</a>
+      <a href="#sec-2" class="quick-nav-link">2. Competencia y Logro</a>
+      <a href="#sec-3" class="quick-nav-link">3. Competencias</a>
+      <a href="#sec-4" class="quick-nav-link">4. Hábitos</a>
+      <a href="#sec-5" class="quick-nav-link">5. IM–TP–TC–P</a>
+      <a href="#sec-6" class="quick-nav-link">6. Recursos</a>
+      <a href="#sec-7" class="quick-nav-link">7. Evaluación</a>
+      <a href="#sec-8" class="quick-nav-link">8. Lista de Cotejo</a>
+      <a href="#sec-9" class="quick-nav-link">9. Observaciones</a>
+    </nav>
+
+    <!-- 1. ENCABEZADO INSTITUCIONAL Y DATOS GENERALES -->
+    <section class="inst-header" id="sec-1">
+      <div class="inst-brand">
+        <div class="inst-crest" aria-hidden="true">CM</div>
+        <div class="inst-title-group">
+          <h1 contenteditable="true" data-field="colegio_titulo">Colegio Montano</h1>
+          <p contenteditable="true" data-field="subtitulo_plan">Plan Diario de Clase N.° 11 • Modelo Formativo por Competencias</p>
+        </div>
+      </div>
+      <div class="time-summary-box">
+        <div class="label">Duración Total de Sesión</div>
+        <div class="value"><span id="total-minutes-display">50</span> minutos</div>
+        <div class="sub" id="breakdown-display">IM 8' • TP 15' • TC 20' • P 7'</div>
+        <div class="time-warning" id="time-warning" style="display: none;">Ajustar suma a 50 min</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header primary-header">
+        <h2><span class="section-num">1</span> Datos Generales de la Clase</h2>
+        <span style="font-size: 12.5px; color: var(--amarillo-institucional); font-weight: 600;">Haga clic sobre cualquier dato para editar</span>
+      </div>
+      <div class="card-body">
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Colegio</div>
+            <div class="meta-value" contenteditable="true" data-field="colegio">Montano</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Modalidad</div>
+            <div class="meta-value" contenteditable="true" data-field="modalidad">Presencial</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Materia</div>
+            <div class="meta-value" contenteditable="true" data-field="materia">Comunicación y Lenguaje</div>
+          </div>
+          <div class="meta-item highlight-meta">
+            <div class="meta-label">Tema de la Sesión</div>
+            <div class="meta-value" contenteditable="true" data-field="tema">Familia de palabras</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Grado</div>
+            <div class="meta-value" contenteditable="true" data-field="grado">Tercero primaria</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Unidad</div>
+            <div class="meta-value" contenteditable="true" data-field="unidad">1</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Número de Plan</div>
+            <div class="meta-value" contenteditable="true" data-field="num_plan">11</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Fecha</div>
+            <div class="meta-value" contenteditable="true" data-field="fecha">Febrero 2027</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Docente</div>
+            <div class="meta-value" contenteditable="true" data-field="docente">Sara Rivera</div>
+          </div>
+          <div class="meta-item highlight-meta">
+            <div class="meta-label">Duración</div>
+            <div class="meta-value" contenteditable="true" data-field="duracion_texto">50 minutos</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. COMPETENCIA Y LOGRO DE APRENDIZAJE -->
+    <section class="card" id="sec-2">
+      <div class="card-header">
+        <h2><span class="section-num">2</span> Competencia y Logro de Aprendizaje</h2>
+      </div>
+      <div class="card-body">
+        <div class="comp-grid">
+          <div class="comp-box">
+            <div class="comp-box-title">Competencia de Aprendizaje</div>
+            <p class="comp-text" contenteditable="true" data-field="competencia">
+              Construye y clasifica familias de palabras a partir de una raíz común y su palabra primitiva, discriminando términos derivados genuinos de falsos parientes semánticos, para enriquecer su vocabulario y redactar mensajes claros en situaciones comunicativas cotidianas.
+            </p>
+          </div>
+          <div class="comp-box">
+            <div class="comp-box-title">Logro de Aprendizaje (50 minutos)</div>
+            <p class="comp-text" contenteditable="true" data-field="logro">
+              Al finalizar los 50 minutos de clase, el estudiante de tercero primaria agrupa correctamente al menos tres familias de palabras identificando su raíz común y palabra primitiva, descarta dos falsos parientes en la «Guía Genealógica de Palabras», y elabora en equipo asignado un «Árbol de Familia Léxica» con cuatro palabras derivadas y un párrafo breve contextualizado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. COMPETENCIAS CLAVE Y BLANDAS -->
+    <section class="card" id="sec-3">
+      <div class="card-header">
+        <h2><span class="section-num">3</span> Competencias Clave y Competencias Blandas a Desarrollar</h2>
+      </div>
+      <div class="card-body">
+        <div class="skills-columns">
+          <!-- Competencias Clave -->
+          <div>
+            <h3 class="skill-group-title">Competencias Clave</h3>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_critico" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc1_t">Pensamiento crítico (Se desarrolla en esta sesión)</strong>
+                <p contenteditable="true" data-field="cc1_d">Evalúa el significado real de cada palabra para diferenciar derivados legítimos de falsos parientes (por ejemplo, <em>mar / marino / marea</em> frente a <em>martillo</em>, o <em>casa / caserío / casita</em> frente a <em>casco</em>).</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_creatividad" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc2_t">Creatividad (Se desarrolla en esta sesión)</strong>
+                <p contenteditable="true" data-field="cc2_d">Diseña gráficamente un «Árbol de Familia Léxica» donde la raíz y la palabra primitiva sostienen las ramas de palabras derivadas, integrándolas en una historia o párrafo breve original.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_equipo" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc3_t">Trabajo en equipo (Se desarrolla en esta sesión)</strong>
+                <p contenteditable="true" data-field="cc3_d">Coopera en equipos de 4 integrantes organizados previamente por la docente, cumpliendo roles específicos para clasificar tarjetas léxicas y producir el cartel colectivo.</p>
+              </div>
+            </div>
+            <div class="skill-item inactive-skill">
+              <input type="checkbox" data-skill="cc_problemas" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc4_t">Resolución de problemas (Complementaria)</strong>
+                <p contenteditable="true" data-field="cc4_d">Infiere el significado de palabras derivadas poco familiares en lecturas cotidianas apoyándose en su palabra primitiva conocida.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Competencias Blandas -->
+          <div>
+            <h3 class="skill-group-title">Competencias Blandas</h3>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_comunicacion" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb1_t">Comunicación (Se desarrolla en esta sesión)</strong>
+                <p contenteditable="true" data-field="cb1_d">Justifica oralmente por qué un grupo de palabras pertenece a la misma familia léxica y utiliza dichas palabras con precisión en su párrafo contextual.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_decisiones" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb2_t">Toma de decisiones (Se desarrolla en esta sesión)</strong>
+                <p contenteditable="true" data-field="cb2_d">Acuerda con su equipo qué palabras derivadas son válidas para el árbol léxico y cuáles deben retirarse por ser falsos parientes.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_flexibilidad" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb3_t">Flexibilidad (Se desarrolla en esta sesión)</strong>
+                <p contenteditable="true" data-field="cb3_d">Reconoce pequeñas variaciones ortográficas en palabras derivadas (como <em>lápiz → lapicero</em> o <em>luz → lucecita</em>) sin perder de vista la relación de significado con la palabra primitiva.</p>
+              </div>
+            </div>
+            <div class="skill-item inactive-skill">
+              <input type="checkbox" data-skill="cb_emocional" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb4_t">Inteligencia emocional (Complementaria)</strong>
+                <p contenteditable="true" data-field="cb4_d">Escucha con empatía las sugerencias de sus compañeros de equipo y celebra los hallazgos colectivos durante la galería en plenaria.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. HÁBITOS DEL MODELO FORMATIVO MONTANO -->
+    <section class="card" id="sec-4">
+      <div class="card-header">
+        <h2><span class="section-num">4</span> Hábitos del Modelo Formativo Montano</h2>
+      </div>
+      <div class="card-body">
+        <div class="habits-grid">
+          <div class="habit-card">
+            <span class="habit-badge">Hábito 2</span>
+            <div class="habit-title" contenteditable="true" data-field="hab1_t">Comenzar con un fin en mente</div>
+            <p class="habit-desc" contenteditable="true" data-field="hab1_d">
+              Desde la «Reunión Familiar de Palabras» en la IM, el estudiante comprende que la meta de la sesión es descubrir el parentesco real de significado (raíz común y palabra primitiva) para formar familias léxicas sin dejarse engañar por falsos parientes.
+            </p>
+          </div>
+          <div class="habit-card">
+            <span class="habit-badge">Hábito 5</span>
+            <div class="habit-title" contenteditable="true" data-field="hab2_t">Buscar primero entender, luego ser entendido</div>
+            <p class="habit-desc" contenteditable="true" data-field="hab2_d">
+              Tanto en su guía individual como al negociar las tarjetas en equipo, el alumno analiza primero el significado de cada término y escucha la explicación de sus compañeros antes de afirmar si una palabra es derivada o intrusa.
+            </p>
+          </div>
+          <div class="habit-card">
+            <span class="habit-badge">Hábito 6</span>
+            <div class="habit-title" contenteditable="true" data-field="hab3_t">Sinergizar</div>
+            <p class="habit-desc" contenteditable="true" data-field="hab3_d">
+              En el taller «Bosque de Familias Léxicas», los cuatro roles (Guardián de la Raíz, Detector de Falsos Parientes, Constructor de Derivadas y Redactor/Vocero) suman sus ideas para crear un árbol léxico completo y un párrafo coherente.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SECUENCIA DIDÁCTICA INTERACTIVA (50 MINUTOS EXACTOS) -->
+    <section class="card" id="sec-5">
+      <div class="card-header primary-header">
+        <h2><span class="section-num">5</span> Secuencia Didáctica Obligatoria (IM – TP – TC – P = 50 min)</h2>
+        <span style="font-size: 12.5px; color: var(--amarillo-institucional); font-weight: 700;">Navegación por momentos</span>
+      </div>
+      <div class="card-body">
+
+        <!-- Barra proporcional visual de tiempo -->
+        <div class="timeline-bar no-print" title="Distribución de 50 minutos: IM 8', TP 15', TC 20', P 7'">
+          <div class="tl-seg-im" id="bar-im" style="width: 16%;"></div>
+          <div class="tl-seg-tp" id="bar-tp" style="width: 30%;"></div>
+          <div class="tl-seg-tc" id="bar-tc" style="width: 40%;"></div>
+          <div class="tl-seg-p"  id="bar-p"  style="width: 14%;"></div>
+        </div>
+
+        <!-- Pestañas de navegación -->
+        <div class="seq-nav no-print" role="tablist">
+          <button type="button" class="tab-btn active" data-target="all">
+            <div class="tab-code"><span>VER TODOS</span><span class="tab-time" id="tab-total-badge">50 min</span></div>
+            <div class="tab-name">Secuencia completa</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-im">
+            <div class="tab-code"><span>IM</span><span class="tab-time" id="tab-im-badge">8 min</span></div>
+            <div class="tab-name">Introducción Motivante</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-tp">
+            <div class="tab-code"><span>TP</span><span class="tab-time" id="tab-tp-badge">15 min</span></div>
+            <div class="tab-name">Trabajo Personal</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-tc">
+            <div class="tab-code"><span>TC</span><span class="tab-time" id="tab-tc-badge">20 min</span></div>
+            <div class="tab-name">Trabajo Cooperativo</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-p">
+            <div class="tab-code"><span>P</span><span class="tab-time" id="tab-p-badge">7 min</span></div>
+            <div class="tab-name">Plenaria</div>
+          </button>
+        </div>
+
+        <!-- MOMENTO 1: IM (8 minutos: 2' + 3' + 3') -->
+        <article class="moment-panel active-panel" id="panel-im">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 1 • Activación</span>
+              <h3 contenteditable="true" data-field="im_titulo">IM — Introducción Motivante: «Reunión Familiar de Palabras: ¿Quién sí es pariente?»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-im" value="8" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito Didáctico</h4>
+                <p contenteditable="true" data-field="im_proposito">
+                  Activar conocimientos previos sobre la relación de significado entre palabras cotidianas, despertar curiosidad con un reto de parentesco léxico y presentar los conceptos de <em>raíz común</em>, <em>palabra primitiva</em> y <em>palabras derivadas</em>.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Situación Problema / Pregunta Generadora</h4>
+                <p contenteditable="true" data-field="im_problema">
+                  «En la casa de la palabra <strong>mar</strong> organizaron una reunión familiar y llegaron <em>marino</em>, <em>marea</em>, <em>submarino</em>, <em>mariscos</em> y <em>martillo</em>. ¿Cómo podemos comprobar quiénes sí pertenecen a la familia de <em>mar</em> y quién es un falso pariente que se coló por empezar con las mismas letras?»
+                </p>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Instrucciones Paso a Paso (Actividad Presencial)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">2 min (Min 1–2)</span></td>
+                  <td contenteditable="true" data-field="im_paso1">
+                    <strong>Escena en la pizarra:</strong> La docente dibuja una casa con la palabra primitiva <em>mar</em> en la puerta y pega alrededor las tarjetas <em>marino, marea, submarino, mariscos</em> y <em>martillo</em>, invitando a los estudiantes a observar qué tienen en común.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 3–5)</span></td>
+                  <td contenteditable="true" data-field="im_paso2">
+                    <strong>Comprobación de parentesco:</strong> Por turnos, los alumnos subrayan la raíz <em>mar-</em> y explican con sus propias palabras por qué <em>martillo</em> no guarda relación con el mar, descubriendo que una familia de palabras comparte tanto raíz como significado.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 6–8)</span></td>
+                  <td contenteditable="true" data-field="im_paso3">
+                    <strong>Síntesis y propósito de la clase:</strong> La docente nombra los elementos clave (<strong>palabra primitiva</strong>, <strong>raíz común</strong> y <strong>palabras derivadas</strong>) con el ejemplo rápido de <em>fruta → frutería, frutero, frutal</em> y establece la meta del día (Hábito 2).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Recursos y Evidencia de Participación</h4>
+                <p contenteditable="true" data-field="im_evidencia">
+                  <strong>Recursos:</strong> Pizarra, marcadores azul y amarillo, y tarjetas ilustradas de la «Reunión Familiar de Palabras».<br/>
+                  <strong>Evidencia:</strong> Participación oral argumentada al señalar la raíz común y justificar la exclusión del falso pariente.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Hábito Formativo Relacionado</h4>
+                <p contenteditable="true" data-field="im_habito">
+                  <strong>Hábito 2 (Comenzar con un fin en mente) y Hábito 5 (Buscar primero entender, luego ser entendido):</strong> El estudiante comprende la finalidad de analizar el significado antes de agrupar palabras y escucha las ideas de sus compañeros.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- MOMENTO 2: TP (15 minutos: 3' + 8' + 4') -->
+        <article class="moment-panel active-panel" id="panel-tp">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 2 • Construcción Individual</span>
+              <h3 contenteditable="true" data-field="tp_titulo">TP — Trabajo Personal: «Guía Genealógica de Palabras»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-tp" value="15" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito Didáctico</h4>
+                <p contenteditable="true" data-field="tp_proposito">
+                  Fortalecer la comprensión individual mediante la clasificación de tres familias léxicas cotidianas, la identificación de su palabra primitiva y raíz común, la detección de falsos parientes y la producción original de nuevas palabras derivadas en contexto.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Producto Individual Verificable</h4>
+                <p contenteditable="true" data-field="tp_producto">
+                  <strong>«Guía Genealógica de Palabras» completada:</strong> Tres cuadros familiares organizados (palabra primitiva + raíz resaltada + derivados), dos falsos parientes tachados con justificación breve y tres palabras derivadas originales aplicadas en oraciones.
+                </p>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Instrucciones Claras y Secuencia Individual</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 1–3)</span></td>
+                  <td contenteditable="true" data-field="tp_paso1">
+                    <strong>Instrucciones y ejemplo guiado:</strong> La docente entrega la «Guía Genealógica de Palabras» impresa, lee los tres retos y modela el primer caso con la palabra primitiva <em>libro</em> (raíz <em>libr-</em> → <em>librería, librero, libreta</em>; falso pariente: <em>libre</em>).
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">8 min (Min 4–11)</span></td>
+                  <td contenteditable="true" data-field="tp_paso2">
+                    <strong>Clasificación y filtro de falsos parientes:</strong> De un banco de 14 palabras cotidianas (<em>zapato, zapatería, zapatilla, zapatero; flor, florero, florería, florecer, flotador; pan, panadería, panadero, panecillo, pantalón</em>), cada estudiante organiza las tres familias, resalta la raíz en amarillo y tacha los dos falsos parientes explicando por qué no son familia.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">4 min (Min 12–15)</span></td>
+                  <td contenteditable="true" data-field="tp_paso3">
+                    <strong>Creación léxica en contexto real:</strong> A partir de las palabras primitivas <em>campo</em>, <em>casa</em> y <em>sol</em>, el estudiante escribe una palabra derivada nueva para cada una y redacta dos oraciones sobre actividades de su comunidad o escuela mientras la docente retroalimenta puesto por puesto.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Recursos</h4>
+                <p contenteditable="true" data-field="tp_recursos">
+                  Hoja impresa «Guía Genealógica de Palabras», lápiz, borrador, crayón amarillo y azul, y cuaderno de Comunicación y Lenguaje.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Criterios de Seguimiento Docente</h4>
+                <p contenteditable="true" data-field="tp_seguimiento">
+                  1) Agrupación exacta de las tres familias léxicas; 2) Identificación de la palabra primitiva y raíz común; 3) Exclusión argumentada de los dos falsos parientes; 4) Uso pertinente de derivados nuevos en oraciones.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- MOMENTO 3: TC (20 minutos: 3' + 10' + 7') -->
+        <article class="moment-panel active-panel" id="panel-tc">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 3 • Construcción Colaborativa</span>
+              <h3 contenteditable="true" data-field="tc_titulo">TC — Trabajo Cooperativo: «Bosque de Familias Léxicas: Árbol Genealógico»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-tc" value="20" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito y Organización de Equipos</h4>
+                <p contenteditable="true" data-field="tc_proposito">
+                  Construir colaborativamente un organizador gráfico en equipos heterogéneos de 4 integrantes conformados previamente por la docente (no por afinidad), analizando tarjetas léxicas, descartando intrusos y redactando un párrafo breve con la familia asignada.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Producto Colectivo Concreto</h4>
+                <p contenteditable="true" data-field="tc_producto">
+                  <strong>Cartel «Árbol de Familia Léxica»:</strong> Organizador gráfico en cartulina con la <em>raíz común</em> en las raíces del árbol, la <em>palabra primitiva</em> en el tronco, al menos 4 <em>palabras derivadas</em> en las ramas y un párrafo breve (3 a 4 líneas) que las emplee con coherencia.
+                </p>
+              </div>
+            </div>
+
+            <h4 style="font-size: 13.5px; color: var(--azul-institucional); text-transform: uppercase; margin-bottom: 8px;">Roles Cooperativos Obligatorios (Equipos de 4 Integrantes)</h4>
+            <div class="roles-grid">
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol1_t">1. Guardián de la Raíz y Coordinador</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol1_d">Modera los turnos de participación, verifica que todos aporten y ubica la raíz común y la palabra primitiva en la base del árbol.</span>
+              </div>
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol2_t">2. Detector de Falsos Parientes</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol2_d">Analiza las tarjetas mezcladas del sobre y separa las palabras trampa explicando al grupo por qué no comparten significado.</span>
+              </div>
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol3_t">3. Constructor de Palabras Derivadas</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol3_d">Organiza las tarjetas derivadas válidas en las ramas del árbol y propone una palabra derivada adicional creada por el equipo.</span>
+              </div>
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol4_t">4. Redactor de Párrafo y Vocero</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol4_d">Controla los tiempos (3' + 10' + 7'), escribe el párrafo breve acordado por el equipo y presenta el árbol en la plenaria.</span>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Instrucciones de Trabajo en Equipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 1–3)</span></td>
+                  <td contenteditable="true" data-field="tc_paso1">
+                    <strong>Conformación de equipos y entrega de sobres:</strong> La docente organiza los equipos heterogéneos de 4 estudiantes, asigna los roles y entrega a cada grupo una cartulina con silueta de árbol y un sobre con 9 tarjetas léxicas (1 primitiva, 5 derivadas y 3 falsos parientes, ej. familia de <em>agua, tierra, papel, caballo</em> o <em>niño</em>).
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">10 min (Min 4–13)</span></td>
+                  <td contenteditable="true" data-field="tc_paso2">
+                    <strong>Selección léxica y armado del árbol:</strong> El equipo discute cada tarjeta, aparta los 3 falsos parientes en el «buzón de descartes», identifica la raíz común, pega la palabra primitiva en el tronco y coloca al menos 4 palabras derivadas en las ramas resaltando su raíz.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">7 min (Min 14–20)</span></td>
+                  <td contenteditable="true" data-field="tc_paso3">
+                    <strong>Redacción del párrafo contextual y ensayo:</strong> Entre todos redactan un párrafo breve de 3 a 4 líneas sobre una situación real usando al menos tres palabras de su árbol, revisan ortografía y preparan la intervención breve del Vocero.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-info-box">
+              <h4>Recursos, Criterios de Evaluación y Hábito Relacionado</h4>
+              <p contenteditable="true" data-field="tc_criterios">
+                <strong>Recursos:</strong> Sobres con tarjetas de palabras, cartulina con plantilla de «Árbol de Familia Léxica», goma o cinta, y marcadores azul y amarillo.<br/>
+                <strong>Criterios:</strong> Participación equilibrada de los 4 roles, identificación exacta de raíz común y palabra primitiva, exclusión correcta de falsos parientes, mínimo 4 derivados en ramas y párrafo coherente.<br/>
+                <strong>Hábito 5 y Hábito 6 (Sinergizar):</strong> Escuchan los argumentos de cada compañero antes de pegar una tarjeta y combinan sus habilidades para construir un organizador claro y creativo.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- MOMENTO 4: P (7 minutos: 4' + 3') -->
+        <article class="moment-panel active-panel" id="panel-p">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 4 • Socialización y Cierre</span>
+              <h3 contenteditable="true" data-field="p_titulo">P — Plenaria: «Exposición del Bosque Léxico y Ticket de Salida»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-p" value="7" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito de Cierre</h4>
+                <p contenteditable="true" data-field="p_proposito">
+                  Socializar los árboles léxicos en la pizarra, contrastar cómo una misma raíz genera múltiples palabras útiles, brindar retroalimentación formativa y comprobar individualmente el logro de aprendizaje.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Estrategia de Evaluación de Salida</h4>
+                <p contenteditable="true" data-field="p_estrategia">
+                  <strong>Ticket de Salida («Mi Nueva Familia Léxica»):</strong> Cada estudiante recibe una palabra primitiva distinta (por ejemplo, <em>leche</em>, <em>perro</em> o <em>camino</em>), subraya su raíz, escribe dos palabras derivadas y tacha un falso pariente propuesto en la tarjeta.
+                </p>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Pasos de Plenaria y Cierre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">4 min (Min 1–4)</span></td>
+                  <td contenteditable="true" data-field="p_paso1">
+                    <strong>Socialización rápida en pizarra:</strong> Los equipos fijan sus árboles en la pizarra formando el «Bosque de Familias Léxicas»; dos voceros comparten su palabra primitiva, un falso pariente descartado y su párrafo, y la docente consolida la conclusión del día.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 5–7)</span></td>
+                  <td contenteditable="true" data-field="p_paso2">
+                    <strong>Ticket de Salida individual:</strong> Cada estudiante completa en silencio su tarjeta «Mi Nueva Familia Léxica» (raíz, dos derivados y detección del falso pariente) y la entrega a la docente como evidencia final de logro.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-info-box">
+              <h4>Recursos y Evidencia Final</h4>
+              <p contenteditable="true" data-field="p_evidencia">
+                <strong>Recursos:</strong> Pizarra, cinta adhesiva, tarjetas impresas de Ticket de Salida y lápiz.<br/>
+                <strong>Evidencia final:</strong> Carteles «Árbol de Familia Léxica» socializados en el bosque mural y Tickets de Salida individuales resueltos.
+              </p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 6. RECURSOS DIDÁCTICOS -->
+    <section class="card" id="sec-6">
+      <div class="card-header">
+        <h2><span class="section-num">6</span> Recursos Didácticos (Aula Presencial)</h2>
+      </div>
+      <div class="card-body">
+        <div class="resources-grid">
+          <div class="resource-item">
+            <div class="resource-icon">1</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec1_t">«Guía Genealógica de Palabras» (impresa)</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec1_d">Hoja de trabajo individual para clasificar tres familias léxicas, identificar falsos parientes y crear derivados nuevos.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">2</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec2_t">Sobres de tarjetas léxicas y falsos parientes</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec2_d">Material manipulativo de cartulina con palabras primitivas, derivadas y palabras intrusas para clasificar en equipo.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">3</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec3_t">Cartulinas «Árbol de Familia Léxica»</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec3_d">Organizador gráfico físico con espacio para raíz común, tronco primitivo, ramas derivadas y párrafo contextual.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">4</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec4_t">Pizarra, marcadores y crayones institucionales</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec4_d">Marcadores y crayones azul y amarillo para destacar la raíz común y organizar el mural «Bosque de Familias Léxicas».</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">5</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec5_t">Tickets de Salida impresos y cuaderno</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec5_d">Tarjetas individuales «Mi Nueva Familia Léxica» y cuaderno de Comunicación y Lenguaje para el registro personal.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">6</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec6_t">Libro de texto de Comunicación y Lenguaje (3.º primaria)</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec6_d">Material impreso de referencia disponible en el aula presencial para ampliar ejemplos de derivación.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. EVALUACIÓN DEL APRENDIZAJE -->
+    <section class="card" id="sec-7">
+      <div class="card-header">
+        <h2><span class="section-num">7</span> Evaluación del Aprendizaje (Inicial, Formativa y Sumativa)</h2>
+      </div>
+      <div class="card-body">
+        <div class="eval-stages">
+          <div class="eval-stage-card">
+            <span class="eval-tag tag-formativa">Evidencia Formativa • Evaluación Inicial</span>
+            <h3 style="font-size: 15px; color: var(--azul-institucional); margin-bottom: 6px;" contenteditable="true" data-field="ev_ini_t">Diagnóstico en IM (8 min)</h3>
+            <p style="font-size: 13.8px; color: var(--texto-secundario);" contenteditable="true" data-field="ev_ini_d">
+              Observación de las intervenciones orales y el subrayado en pizarra durante la «Reunión Familiar de Palabras» para explorar conocimientos previos sobre raíces y parentesco semántico (evidencia formativa diagnóstica).
+            </p>
+          </div>
+
+          <div class="eval-stage-card">
+            <span class="eval-tag tag-formativa">Evidencia Formativa • Evaluación de Proceso</span>
+            <h3 style="font-size: 15px; color: var(--azul-institucional); margin-bottom: 6px;" contenteditable="true" data-field="ev_for_t">Acompañamiento en TP y TC (35 min)</h3>
+            <p style="font-size: 13.8px; color: var(--texto-secundario);" contenteditable="true" data-field="ev_for_d">
+              Revisión directa de la «Guía Genealógica de Palabras» y monitoreo del cumplimiento de roles en el taller «Bosque de Familias Léxicas» como evidencias formativas de avance continuo.
+            </p>
+          </div>
+
+          <div class="eval-stage-card">
+            <span class="eval-tag tag-calificada">Actividad Calificada • Evaluación Sumativa</span>
+            <h3 style="font-size: 15px; color: var(--azul-institucional); margin-bottom: 6px;" contenteditable="true" data-field="ev_sum_t">Cartel «Árbol de Familia Léxica» + Ticket de Salida</h3>
+            <p style="font-size: 13.8px; color: var(--texto-secundario);" contenteditable="true" data-field="ev_sum_d">
+              Valoración sumativa mediante la lista de cotejo institucional (10 puntos) sobre el organizador gráfico colectivo y el Ticket de Salida individual, sin asignar porcentajes arbitrarios de unidad.
+            </p>
+          </div>
+        </div>
+
+        <div class="feedback-box">
+          <strong style="color: var(--azul-institucional); display: block; margin-bottom: 4px;">Retroalimentación Específica y Oportunidad de Mejora:</strong>
+          <p style="font-size: 14px; color: var(--texto-oscuro);" contenteditable="true" data-field="ev_retro">
+            Si un estudiante o equipo incluye un falso pariente (por ejemplo, <em>pantalón</em> en la familia de <em>pan</em>) o no identifica con claridad la palabra primitiva, la docente realiza preguntas guía sobre el significado («¿se vende un pantalón en la panadería o se hace con harina?») y brinda una oportunidad de mejora inmediata para reemplazar la tarjeta o corregir su ejemplo antes de entregar el producto final.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. INSTRUMENTO DE EVALUACIÓN INTERACTIVO -->
+    <section class="card" id="sec-8">
+      <div class="card-header primary-header">
+        <h2><span class="section-num">8</span> Instrumento de Evaluación Interactivo — Lista de Cotejo</h2>
+        <span style="font-size: 12.5px; color: var(--amarillo-institucional); font-weight: 700;">Cálculo automático en tiempo real</span>
+      </div>
+      <div class="card-body">
+
+        <div class="rubric-controls">
+          <div class="student-eval-field">
+            <label for="eval-student-name">Estudiante / Equipo evaluado:</label>
+            <input type="text" id="eval-student-name" class="student-eval-input" placeholder="Ej. Equipo 2 — Mateo Estrada" />
+          </div>
+          <div class="score-display">
+            <div class="score-badge">Puntaje: <span id="rubric-score">0</span> / 10 pts</div>
+            <div class="level-badge" id="rubric-level">Sin evaluar</div>
+            <button type="button" class="btn btn-outline no-print" id="btn-clear-rubric" style="padding: 6px 10px; font-size: 12.5px;">
+              Reiniciar marcas
+            </button>
+          </div>
+        </div>
+
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">N.°</th>
+              <th>Criterio Observable Alineado al Logro de Aprendizaje</th>
+              <th class="center" style="width: 90px;">Sí<br/>(2 pts)</th>
+              <th class="center" style="width: 115px;">En proceso<br/>(1 pt)</th>
+              <th class="center" style="width: 90px;">No<br/>(0 pts)</th>
+            </tr>
+          </thead>
+          <tbody id="rubric-tbody">
+            <tr>
+              <td><strong>1</strong></td>
+              <td contenteditable="true" data-field="crit_1">
+                <strong>Identificación de raíz común y palabra primitiva:</strong> Reconoce y resalta con precisión la raíz común y la palabra primitiva en las tres familias analizadas en su guía individual.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit1" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit1" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit1" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td contenteditable="true" data-field="crit_2">
+                <strong>Exclusión de falsos parientes y creación léxica:</strong> Descarta con argumento semántico los dos falsos parientes y construye tres palabras derivadas nuevas en oraciones con sentido.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit2" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit2" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit2" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td contenteditable="true" data-field="crit_3">
+                <strong>Organizador «Árbol de Familia Léxica»:</strong> Ubica correctamente raíz, palabra primitiva y al menos cuatro palabras derivadas en el cartel grupal, integrándolas en un párrafo breve coherente.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit3" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit3" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit3" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td contenteditable="true" data-field="crit_4">
+                <strong>Ticket de Salida («Mi Nueva Familia Léxica»):</strong> Subraya la raíz de una nueva palabra primitiva, escribe dos palabras derivadas válidas y tacha correctamente el falso pariente.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit4" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit4" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit4" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td contenteditable="true" data-field="crit_5">
+                <strong>Trabajo cooperativo y hábitos Montano:</strong> Cumple con responsabilidad su rol asignado en el equipo heterogéneo y aplica los Hábitos 2, 5 y 6 durante el taller.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit5" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit5" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit5" value="0" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="feedback-box" style="margin-top: 14px;">
+          <strong style="color: var(--azul-institucional); display: block; margin-bottom: 4px;">Retroalimentación y Oportunidad de Mejora Registrada:</strong>
+          <p id="rubric-feedback-text" style="font-size: 14px; color: var(--texto-oscuro);" contenteditable="true" data-field="rubric_feedback">
+            Seleccione una valoración en cada criterio para calcular el puntaje. Oportunidad de mejora sugerida: comprobar siempre si el significado de la palabra derivada mantiene relación directa con la palabra primitiva.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. OBSERVACIONES Y REFLEXIÓN DOCENTE -->
+    <section class="card" id="sec-9">
+      <div class="card-header">
+        <h2><span class="section-num">9</span> Observaciones y Reflexión Docente</h2>
+      </div>
+      <div class="card-body">
+        <div class="obs-grid">
+          <div class="obs-box">
+            <h3>Fortalezas de la Sesión</h3>
+            <div class="obs-area" contenteditable="true" data-field="obs_aciertos">
+              Registre aquí los logros observados al agrupar familias de palabras, detectar falsos parientes y redactar los párrafos colaborativos...
+            </div>
+          </div>
+          <div class="obs-box">
+            <h3>Dificultades Detectadas</h3>
+            <div class="obs-area" contenteditable="true" data-field="obs_dificultades">
+              Anote confusiones frecuentes (por ejemplo, palabras derivadas con cambio ortográfico en la raíz o falsos parientes con letras iniciales similares)...
+            </div>
+          </div>
+          <div class="obs-box">
+            <h3>Ajustes para la Siguiente Sesión</h3>
+            <div class="obs-area" contenteditable="true" data-field="obs_ajustes">
+              Indique estrategias de refuerzo, nuevos bancos de palabras primitivas o acompañamiento individualizado para el siguiente plan de unidad...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL PERSONALIZADO DE CONFIRMACIÓN DE REINICIO -->
+  <div class="modal-backdrop no-print" id="reset-modal" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+    <div class="modal-card">
+      <div class="modal-body">
+        <h3 id="reset-modal-title">Restablecer Plan N.° 11</h3>
+        <p>
+          ¿Desea restaurar todos los campos editables, tiempos y criterios de evaluación a los valores originales de «Familia de palabras»?
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="btn-cancel-reset">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btn-confirm-reset">Sí, restablecer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN FLOTANTE -->
+  <div class="toast" id="toast-msg" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const STORAGE_KEY = "montano_plan_11_familia_palabras";
+      const editableFields = document.querySelectorAll("[data-field]");
+      const timeInputs = {
+        im: document.getElementById("min-im"),
+        tp: document.getElementById("min-tp"),
+        tc: document.getElementById("min-tc"),
+        p:  document.getElementById("min-p")
+      };
+
+      const toastEl = document.getElementById("toast-msg");
+      const saveStatus = document.getElementById("save-status");
+      let toastTimer = null;
+
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.remove("show");
+        }, 2800);
+      }
+
+      // Capturar estado predeterminado al iniciar
+      function captureCurrentState() {
+        const fields = {};
+        editableFields.forEach((el) => {
+          fields[el.dataset.field] = el.innerHTML;
+        });
+
+        const skills = {};
+        document.querySelectorAll("[data-skill]").forEach((cb) => {
+          skills[cb.dataset.skill] = cb.checked;
+        });
+
+        const rubric = {};
+        for (let i = 1; i <= 5; i++) {
+          const checked = document.querySelector(`input[name="crit${i}"]:checked`);
+          rubric[`crit${i}`] = checked ? checked.value : null;
+        }
+
+        return {
+          fields,
+          times: {
+            im: timeInputs.im.value,
+            tp: timeInputs.tp.value,
+            tc: timeInputs.tc.value,
+            p:  timeInputs.p.value
+          },
+          skills,
+          studentName: document.getElementById("eval-student-name").value,
+          rubric
+        };
+      }
+
+      const defaultState = captureCurrentState();
+
+      function applyState(state) {
+        if (!state) return;
+        if (state.fields) {
+          editableFields.forEach((el) => {
+            const key = el.dataset.field;
+            if (Object.prototype.hasOwnProperty.call(state.fields, key)) {
+              el.innerHTML = state.fields[key];
+            }
+          });
+        }
+        if (state.times) {
+          timeInputs.im.value = state.times.im || 8;
+          timeInputs.tp.value = state.times.tp || 15;
+          timeInputs.tc.value = state.times.tc || 20;
+          timeInputs.p.value  = state.times.p  || 7;
+          recalculateTimes();
+        }
+        if (state.skills) {
+          document.querySelectorAll("[data-skill]").forEach((cb) => {
+            const key = cb.dataset.skill;
+            if (Object.prototype.hasOwnProperty.call(state.skills, key)) {
+              cb.checked = !!state.skills[key];
+              cb.closest(".skill-item").classList.toggle("inactive-skill", !cb.checked);
+            }
+          });
+        }
+        if (typeof state.studentName === "string") {
+          document.getElementById("eval-student-name").value = state.studentName;
+        }
+        if (state.rubric) {
+          for (let i = 1; i <= 5; i++) {
+            const val = state.rubric[`crit${i}`];
+            document.querySelectorAll(`input[name="crit${i}"]`).forEach((radio) => {
+              radio.checked = (val !== null && radio.value === String(val));
+            });
+          }
+          calculateRubricScore();
+        }
+      }
+
+      // Persistencia automática en localStorage
+      function saveToLocalStorage(notify = false) {
+        try {
+          const current = captureCurrentState();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+          const now = new Date();
+          const hh = String(now.getHours()).padStart(2, "0");
+          const mm = String(now.getMinutes()).padStart(2, "0");
+          saveStatus.textContent = `Guardado automáticamente (${hh}:${mm})`;
+          if (notify) {
+            showToast("Planificación guardada correctamente en este navegador.");
+          }
+        } catch (err) {
+          saveStatus.textContent = "Edición activa (sin almacenamiento local disponible)";
+        }
+      }
+
+      function loadFromLocalStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            applyState(JSON.parse(raw));
+            saveStatus.textContent = "Datos recuperados de su última sesión";
+          }
+        } catch (err) {
+          // Continuar con valores por defecto
+        }
+      }
+
+      // Cálculo dinámico de los 50 minutos
+      function recalculateTimes() {
+        const im = Math.max(0, parseInt(timeInputs.im.value, 10) || 0);
+        const tp = Math.max(0, parseInt(timeInputs.tp.value, 10) || 0);
+        const tc = Math.max(0, parseInt(timeInputs.tc.value, 10) || 0);
+        const p  = Math.max(0, parseInt(timeInputs.p.value, 10)  || 0);
+        const total = im + tp + tc + p;
+
+        document.getElementById("total-minutes-display").textContent = total;
+        document.getElementById("breakdown-display").textContent = `IM ${im}' • TP ${tp}' • TC ${tc}' • P ${p}'`;
+        document.getElementById("tab-total-badge").textContent = `${total} min`;
+        document.getElementById("tab-im-badge").textContent = `${im} min`;
+        document.getElementById("tab-tp-badge").textContent = `${tp} min`;
+        document.getElementById("tab-tc-badge").textContent = `${tc} min`;
+        document.getElementById("tab-p-badge").textContent  = `${p} min`;
+
+        const safeTotal = total > 0 ? total : 1;
+        document.getElementById("bar-im").style.width = `${(im / safeTotal) * 100}%`;
+        document.getElementById("bar-tp").style.width = `${(tp / safeTotal) * 100}%`;
+        document.getElementById("bar-tc").style.width = `${(tc / safeTotal) * 100}%`;
+        document.getElementById("bar-p").style.width  = `${(p / safeTotal) * 100}%`;
+
+        const warningEl = document.getElementById("time-warning");
+        warningEl.style.display = (total !== 50) ? "inline-block" : "none";
+      }
+
+      Object.values(timeInputs).forEach((input) => {
+        input.addEventListener("input", () => {
+          recalculateTimes();
+          saveToLocalStorage(false);
+        });
+      });
+
+      // Navegación por pestañas entre IM, TP, TC, P y Ver Todos
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const momentPanels = document.querySelectorAll(".moment-panel");
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const target = btn.dataset.target;
+          momentPanels.forEach((panel) => {
+            if (target === "all" || panel.id === target) {
+              panel.classList.add("active-panel");
+            } else {
+              panel.classList.remove("active-panel");
+            }
+          });
+        });
+      });
+
+      // Checkboxes de competencias clave y blandas
+      document.querySelectorAll("[data-skill]").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          cb.closest(".skill-item").classList.toggle("inactive-skill", !cb.checked);
+          saveToLocalStorage(false);
+        });
+      });
+
+      // Cálculo automático de lista de cotejo (0 a 10 pts)
+      function calculateRubricScore() {
+        let totalScore = 0;
+        let answered = 0;
+
+        for (let i = 1; i <= 5; i++) {
+          const selected = document.querySelector(`input[name="crit${i}"]:checked`);
+          if (selected) {
+            totalScore += parseInt(selected.value, 10);
+            answered++;
+          }
+        }
+
+        document.getElementById("rubric-score").textContent = totalScore;
+        const levelEl = document.getElementById("rubric-level");
+        const fbEl = document.getElementById("rubric-feedback-text");
+
+        if (answered === 0) {
+          levelEl.textContent = "Sin evaluar";
+          return;
+        }
+
+        if (totalScore >= 9) {
+          levelEl.textContent = "Logro Destacado";
+          fbEl.textContent = "Excelente desempeño: agrupa con precisión familias de palabras identificando su raíz común y palabra primitiva, descarta falsos parientes y utiliza palabras derivadas con coherencia.";
+        } else if (totalScore >= 7) {
+          levelEl.textContent = "Logro Satisfactorio";
+          fbEl.textContent = "Buen avance: comprende la formación de familias de palabras. Oportunidad de mejora: verificar siempre el significado de la palabra primitiva para evitar falsos parientes.";
+        } else if (totalScore >= 5) {
+          levelEl.textContent = "En Proceso";
+          fbEl.textContent = "Desempeño en desarrollo: requiere apoyo guiado para distinguir palabras derivadas genuinas de palabras que solo comparten las letras iniciales. Oportunidad de mejora: practicar con tarjetas ilustradas de raíz común.";
+        } else {
+          levelEl.textContent = "Requiere Apoyo";
+          fbEl.textContent = "Requiere acompañamiento individualizado: retomar el ejemplo de «mar → marino, marea, submarino» para asociar cada palabra derivada con el significado de su palabra primitiva.";
+        }
+      }
+
+      document.querySelectorAll(".radio-eval").forEach((radio) => {
+        radio.addEventListener("change", () => {
+          calculateRubricScore();
+          saveToLocalStorage(false);
+        });
+      });
+
+      document.getElementById("btn-clear-rubric").addEventListener("click", () => {
+        document.querySelectorAll(".radio-eval").forEach((r) => { r.checked = false; });
+        document.getElementById("eval-student-name").value = "";
+        calculateRubricScore();
+        saveToLocalStorage(false);
+        showToast("Marcas de la lista de cotejo reiniciadas.");
+      });
+
+      // Guardado al editar cualquier campo
+      editableFields.forEach((el) => {
+        el.addEventListener("input", () => saveToLocalStorage(false));
+      });
+      document.getElementById("eval-student-name").addEventListener("input", () => saveToLocalStorage(false));
+
+      // Botones principales de barra superior
+      document.getElementById("btn-save").addEventListener("click", () => saveToLocalStorage(true));
+
+      document.getElementById("btn-print").addEventListener("click", () => {
+        window.print();
+      });
+
+      // Exportar archivo HTML completo con las ediciones actuales
+      document.getElementById("btn-export").addEventListener("click", () => {
+        const docClone = document.documentElement.cloneNode(true);
+
+        // Sincronizar valores de inputs en el HTML clonado
+        docClone.querySelector("#min-im").setAttribute("value", timeInputs.im.value);
+        docClone.querySelector("#min-tp").setAttribute("value", timeInputs.tp.value);
+        docClone.querySelector("#min-tc").setAttribute("value", timeInputs.tc.value);
+        docClone.querySelector("#min-p").setAttribute("value", timeInputs.p.value);
+
+        const studentVal = document.getElementById("eval-student-name").value;
+        docClone.querySelector("#eval-student-name").setAttribute("value", studentVal);
+
+        docClone.querySelectorAll("[data-skill]").forEach((cb) => {
+          const orig = document.querySelector(`[data-skill="${cb.dataset.skill}"]`);
+          if (orig && orig.checked) {
+            cb.setAttribute("checked", "checked");
+          } else {
+            cb.removeAttribute("checked");
+          }
+        });
+
+        for (let i = 1; i <= 5; i++) {
+          const checked = document.querySelector(`input[name="crit${i}"]:checked`);
+          docClone.querySelectorAll(`input[name="crit${i}"]`).forEach((r) => {
+            if (checked && r.value === checked.value) {
+              r.setAttribute("checked", "checked");
+            } else {
+              r.removeAttribute("checked");
+            }
+          });
+        }
+
+        const htmlString = "<!DOCTYPE html>\n" + docClone.outerHTML;
+        const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const materia = (document.querySelector('[data-field="materia"]').textContent || "Clase").trim().replace(/\s+/g, "_");
+        const planNum = (document.querySelector('[data-field="num_plan"]').textContent || "11").trim();
+        link.href = url;
+        link.download = `Plan_Montano_${materia}_Plan${planNum}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showToast("Archivo HTML exportado con todos sus cambios.");
+      });
+
+      // Modal personalizado de confirmación de reinicio (sin alert/confirm nativos)
+      const resetModal = document.getElementById("reset-modal");
+      document.getElementById("btn-reset").addEventListener("click", () => {
+        resetModal.classList.add("open");
+      });
+
+      document.getElementById("btn-cancel-reset").addEventListener("click", () => {
+        resetModal.classList.remove("open");
+      });
+
+      document.getElementById("btn-confirm-reset").addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        applyState(defaultState);
+        resetModal.classList.remove("open");
+        saveStatus.textContent = "Valores predeterminados restaurados";
+        showToast("Planificación restablecida a su versión original.");
+      });
+
+      // Inicialización al cargar
+      loadFromLocalStorage();
+      recalculateTimes();
+      calculateRubricScore();
+    })();
+  </script>
+</body>
+</html>
